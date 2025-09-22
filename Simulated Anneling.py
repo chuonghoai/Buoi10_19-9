@@ -4,7 +4,7 @@ import random
 import math
 
 class node:
-    def __init__(self, n=4):
+    def __init__(self, n=8):
         self.n = n
         self.state = []
         self.cost = 0
@@ -49,7 +49,9 @@ class board:
         self.frame_right = self.draw_frame(0, 1)
         self.buttons_left = self.create_board(self.frame_left)
         self.buttons_right = self.create_board(self.frame_right)
-    
+        self.reset_btn = tk.Button(self.root, text="Reset")
+        self.reset_btn.grid(row=1, column=0, columnspan=2, pady=10)
+        
     def draw_frame(self, row, col):
         frame = tk.Frame(self.root, bg="white", relief="solid", borderwidth=1)
         frame.grid(column=col, row=row, padx=10, pady=10)
@@ -82,11 +84,11 @@ class board:
 class algorithm_SimulatedAnnealing(board):
     def __init__(self, root):
         super().__init__(root)
+        self.reset_btn.config(command=self.reset)
         self.state = node()
         self.T = 100
         self.T_min = 1e-6
         self.alpha = 0.99
-        self.draw_resetBtn()
         
     def SimulatedAnnealing(self):
         state = self.state
@@ -110,10 +112,6 @@ class algorithm_SimulatedAnnealing(board):
                                 
         self.T *= self.alpha
         return None
-
-    def draw_resetBtn(self):
-        reset_btn = tk.Button(self.root, text="Reset", command=self.reset)
-        reset_btn.grid(row=1, column=0, columnspan=2, pady=10)
 
     def reset(self):
         self.draw_xa(self.buttons_left)

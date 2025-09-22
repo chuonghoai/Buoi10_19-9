@@ -51,8 +51,10 @@ class board:
         self.buttons_right = self.create_board(self.frame_right)
 
         self.reset_btn = tk.Button(self.root, text="Reset")
-        self.reset_btn.grid(row=1, column=0, columnspan=2, pady=10)
+        self.reset_btn.grid(row=1, column=1, pady=10)
         
+        self.path_btn = tk.Button(self.root, text="Path")
+        self.path_btn.grid(row=1, column=0, pady=10)
         
     def draw_frame(self, row, col):
         frame = tk.Frame(self.root, bg="white", relief="solid", borderwidth=1)
@@ -87,6 +89,8 @@ class algorithm_SimulatedAnnealing(board):
     def __init__(self, root):
         super().__init__(root)
         self.reset_btn.config(command=self.reset)
+        self.path_btn.config(command=self.path)
+        self.path_state = []
         self.state = node()
         self.T = 100
         self.T_min = 1e-6
@@ -96,11 +100,11 @@ class algorithm_SimulatedAnnealing(board):
         state = self.state
         state.random()
         state.cost = state.cost_conflict()
+        self.path_state = []
         
         while self.T > self.T_min:
-            self.draw_xa(self.buttons_right, state.state)
-            self.frame_right.update()
-            self.root.after(500)
+            self.path_state.append(state.state[:])
+            
             if state.cost == 0:
                 return state.state
             
@@ -128,6 +132,13 @@ class algorithm_SimulatedAnnealing(board):
             state = self.SimulatedAnnealing()
         
         self.draw_xa(self.buttons_right, state)
+
+    def path(self):
+        for state in self.path_state:
+            print(state)
+            self.draw_xa(self.buttons_left, state)
+            self.frame_left.update()
+            self.root.after(200)
 
 def run_app():
     root = tk.Tk()

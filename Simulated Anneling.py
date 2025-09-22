@@ -109,8 +109,7 @@ class algorithm_SimulatedAnnealing(board):
                 p = math.exp(-delta / self.T)
                 if random.random() < p:
                     state = state_child
-                                
-        self.T *= self.alpha
+            self.T *= self.alpha
         return None
 
     def reset(self):

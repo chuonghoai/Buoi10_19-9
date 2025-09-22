@@ -49,8 +49,10 @@ class board:
         self.frame_right = self.draw_frame(0, 1)
         self.buttons_left = self.create_board(self.frame_left)
         self.buttons_right = self.create_board(self.frame_right)
+
         self.reset_btn = tk.Button(self.root, text="Reset")
         self.reset_btn.grid(row=1, column=0, columnspan=2, pady=10)
+        
         
     def draw_frame(self, row, col):
         frame = tk.Frame(self.root, bg="white", relief="solid", borderwidth=1)
@@ -96,6 +98,9 @@ class algorithm_SimulatedAnnealing(board):
         state.cost = state.cost_conflict()
         
         while self.T > self.T_min:
+            self.draw_xa(self.buttons_right, state.state)
+            self.frame_right.update()
+            self.root.after(500)
             if state.cost == 0:
                 return state.state
             
